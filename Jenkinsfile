@@ -1,26 +1,22 @@
 pipeline {
-         agent any
-         stages {
-             stage('Checkout') {
-                 steps {
-                     git branch: 'develop', url: 'https://github.com/abhayrgit/user-management.git'
-                 }
-             }
-             stage('Build Docker Image') {
-                 steps {
-                     sh 'docker build -t user-management:latest .'
-                 }
-             }
-             stage('Deploy with Docker Compose') {
-                 steps {
-                     sh 'docker-compose down || true'
-                     sh 'docker-compose up -d'
-                 }
-             }
-         }
-         post {
-             always {
-                 echo 'Pipeline completed!'
-             }
-         }
-     }
+    agent any
+    stages {
+        stage('Clone') {
+            steps {
+                git 'https://github.com/abhayrgit/user-management.git'
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t nestjs-app .'
+            }
+        }
+        stage('Run Docker Container') {
+            steps {
+                sh 'docker stop nestjs-app || true'
+                sh 'docker rm nestjs-app || true'
+                sh 'docker run -d -p 3000:3000 --name nestjs-app nestjs-app'
+            }
+        }
+    }
+}

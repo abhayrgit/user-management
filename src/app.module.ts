@@ -18,9 +18,17 @@ import { User } from './users/user.entity';
         port: parseInt(configService.get<string>('DB_PORT', '5432'), 10),
         username: configService.get<string>('DB_USERNAME', 'postgres'),
         password: configService.get<string>('DB_PASSWORD', 'admin'),
-        database: configService.get<string>('DB_DATABASE', 'user_management_db'),
-        entities: [User, __dirname + '/**/*.entity{.ts,.js}', __dirname + '/**/*.entity.{ts,js}'],
-        synchronize: configService.get<string>('TYPEORM_SYNCHRONIZE', 'false') === 'true',
+        database: configService.get<string>(
+          'DB_DATABASE',
+          'user_management_db',
+        ),
+        entities: [
+          User,
+          __dirname + '/**/*.entity{.ts,.js}',
+          __dirname + '/**/*.entity.{ts,js}',
+        ],
+        synchronize:
+          configService.get<string>('TYPEORM_SYNCHRONIZE', 'false') === 'true',
       }),
     }),
     UsersModule,
