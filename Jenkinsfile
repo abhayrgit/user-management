@@ -1,16 +1,19 @@
 pipeline {
     agent any
+
     stages {
         stage('Clone') {
             steps {
-                git 'https://github.com/abhayrgit/user-management.git'
+                git branch: 'develop', url: 'https://github.com/abhayrgit/user-management.git'
             }
         }
+
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t nestjs-app .'
             }
         }
+
         stage('Run Docker Container') {
             steps {
                 sh 'docker stop nestjs-app || true'
